@@ -27,7 +27,7 @@ The above pages should ideally inform the reader about how the project works. A 
 
 ### Previewing the image
 
-In the original project, the camera was found to not have enough time to adjust to the light level. As such, a preview is launched for an arbitrary amount of time (the documentation recommends at least 2 seconds, the project uses 5). In addition, this helps take the image since the original project provides in guidance using a preview. The changed code is below.
+In the original project, the camera was found to not have enough time to adjust to the light level. As such, a preview is launched for an arbitrary amount of time (the documentation recommends at least 2 seconds, the project uses 5). In addition, this helps take the image since the original project provides no guidance using a preview. The changed code is below.
 
 ```python
 from picamera import PiCamera
