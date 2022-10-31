@@ -4,6 +4,11 @@
 
 In this project, we are using a [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) and a [Raspberry Pi Camera Module 2 NoIR](https://www.raspberrypi.com/products/pi-noir-camera-v2/) to semi-accurately measure plant health. An [official project](https://projects.raspberrypi.org/en/projects/astropi-ndvi/) was used as a guideline.
 
+![Raspberry Pi with the Pi NoIR Camera Module](/images/rpi.png "Raspberry Pi with the Pi NoIR Camera Module")
+_The Raspberry Pi 4B with the Pi NoIR Camera Module_
+
+The Pi is kept in a [case](https://www.raspberrypi.com/products/raspberry-pi-4-case/) which does not have a convenient way of attaching a camera module to the board. The camera is threaded from above one of the USB ports and secured on top of the case using some masking tape, along with the blue-light filter. For convenience, it is only connected to the power, and is accessed remotely using SSH and VNC virtual servers.
+
 The project consists of the following steps:
 1. Capturing an image
 2. Increasing contrast
@@ -16,7 +21,7 @@ Although the project is in a usable state, there are still a few quality-of-life
 - [x] Calculate NDVI
 - [x] Colour map
 - [x] Save processed images
-- [ ] Save images based on input name
+- [x] Save images based on input name
 - [ ] Overlay colour guide on images (manually?)
 
 It is recommended that the following pages are read:
@@ -48,7 +53,7 @@ original = stream.array
 
 ### Adjusting for the Pi NoIR Camera
 
-The original project uses a [Raspberry Pi High Quality Camera](https://www.raspberrypi.com/products/raspberry-pi-high-quality-camera/), which is not an infrared camera, and hence the guide removes the infrared filter on it and installs a red filter. But since we are using Pi NoIR Camera, a blue light filter has been put onto the camera and the code edited to match.
+The original project uses a [Raspberry Pi High Quality Camera](https://www.raspberrypi.com/products/raspberry-pi-high-quality-camera/), which is not an infrared camera, and hence the guide removes the infrared filter on it and installs a red filter. But since we are using Pi NoIR Camera, a blue light filter has been put onto the camera and the code edited to match. The changed code is below.
 
 ```python
 def calc_ndvi(image):
@@ -57,4 +62,18 @@ def calc_ndvi(image):
     bottom[bottom==0] = 0.01
     ndvi = (r.astype(float) - b) / bottom      # changed line
     return ndvi
+```
+
+### Saving named images
+
+Since we plan to measure the health of multiple plants, every time the program is run, the user is prompted for a name. A separate directory is created and switched to, in which all the numbered processed images are saved. The important changed code is below.
+
+```python
+from time import sleep
+from os import mkdir, chdir                    # changed line
+
+chdir(images)                                  # changed line
+name = input("Enter name: ")                   # changed line
+mkdir(name)                                    # changed line
+chdir(name)                                    # changed line
 ```
