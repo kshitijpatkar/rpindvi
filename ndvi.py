@@ -4,6 +4,11 @@ from fastiecm import fastiecm
 from picamera import PiCamera
 import picamera.array
 from time import sleep
+from os import mkdir, chdir
+
+name = input("Enter name: ")
+mkdir(name)
+chdir(name)
 
 cam = PiCamera()
 cam.rotation = 270
@@ -52,21 +57,21 @@ def calc_ndvi(image):
 
 
 display(original, 'Original')
-cv2.imwrite('original.png', original)
+cv2.imwrite('1_original.png', original)
 
 contrasted = contrast_stretch(original)
 display(contrasted, 'Contrasted original')
-cv2.imwrite('contrasted.png', contrasted)
+cv2.imwrite('2_contrasted.png', contrasted)
 
 ndvi = calc_ndvi(contrasted)
 display(ndvi, 'NDVI')
-cv2.imwrite('ndvi.png', ndvi)
+cv2.imwrite('3_ndvi.png', ndvi)
 
 ndvi_contrasted = contrast_stretch(ndvi)
 display(ndvi_contrasted, 'NDVI Contrasted')
-cv2.imwrite('ndvi_contrasted.png', ndvi_contrasted)
+cv2.imwrite('4_ndvi_contrasted.png', ndvi_contrasted)
 
 colour_mapped_prep = ndvi_contrasted.astype(np.uint8)
 colour_mapped_image = cv2.applyColorMap(colour_mapped_prep, fastiecm)
 display(colour_mapped_image, 'Colour mapped')
-cv2.imwrite('colour_mapped_image.png', colour_mapped_image)
+cv2.imwrite('5_colour_mapped_image.png', colour_mapped_image)
