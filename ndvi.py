@@ -6,6 +6,7 @@ import picamera.array
 from time import sleep
 from os import mkdir, chdir
 
+chdir(images)
 name = input("Enter name: ")
 mkdir(name)
 chdir(name)
@@ -23,12 +24,12 @@ original = stream.array
 
 def display(image, image_name):
     image = np.array(image, dtype=float)/float(255) # convert to an array
-    
+
     shape = image.shape
     height = int(shape[0]/2)
     width = int(shape[1]/2)
     image = cv2.resize(image, (width, height))
-    
+
     cv2.namedWindow(image_name) # create window
     cv2.imshow(image_name, image) # display image
     cv2.waitKey(0) # wait for keypress
@@ -37,15 +38,15 @@ def display(image, image_name):
 def contrast_stretch(im):
     in_min = np.percentile(im, 5) # find bottom 5 percentile
     in_max = np.percentile(im, 95) # find top 5 percentile
-    
+
     out_min = 0.0
     out_max = 255.0
-    
+
     # stretch out values
     out = im - in_min
     out *= ((out_min - out_max) / (in_min - in_max))
     out += in_min
-    
+
     return out
 
 def calc_ndvi(image):
