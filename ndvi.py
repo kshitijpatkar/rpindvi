@@ -6,7 +6,7 @@ import picamera.array
 from time import sleep
 from os import mkdir, chdir
 
-chdir(images)
+chdir('images')
 name = input("Enter name: ")
 mkdir(name)
 chdir(name)
